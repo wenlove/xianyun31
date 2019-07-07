@@ -113,13 +113,15 @@ import HotelSelect from "@/components/hotel/hotelSelect.vue";
 import HotelFilters from "@/components/hotel/hotelFilters.vue";
 import HotelList from "@/components/hotel/hotelList.vue";
 import HotelMap from "@/components/hotel/hotelMap.vue";
+import HotelDetail from "@/components/hotel/hoteldetail.vue";
 
 export default {
   components: {
     HotelSelect,
     HotelMap,
     HotelFilters,
-    HotelList
+    HotelList,
+    HotelDetail
   }
 };
 </script>
