@@ -61,7 +61,7 @@
             <span>推荐攻略</span>
             <el-button type="primary" class="strategy-button">
                 <i class="el-icon-edit"></i>
-                <em>写游记</em>
+                <nuxt-link to="./post/create">写游记</nuxt-link>
             </el-button>
         </el-row>
 
@@ -109,7 +109,7 @@
           <Dan :item="item" v-if="item.images.length===1"></Dan>
         </el-row>
 
-
+        <!-- 分页 -->
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -190,6 +190,7 @@ export default {
       console.log(`当前页: ${val}`);
     },
 
+
     getArticle(){
       // 推荐文章
       this.$axios({
@@ -216,6 +217,7 @@ export default {
       })
 
       this.getArticle();
+      console.log(this.article);
       
        
   }
@@ -231,6 +233,7 @@ export default {
 .other{
   height: 170px;
   .other-1{
+    flex: 1;
     margin-left: 14px;
     h4{
       height: 24px;
@@ -441,7 +444,6 @@ export default {
 }
 
 .publicity{
-    width: 100%;
     height: 150px;
     padding-bottom: 16px;
     overflow: hidden;
