@@ -184,9 +184,13 @@
                 const {status,message} = res.data;
                 if(status===0){
                     this.$message.success(message)
+<<<<<<< HEAD
 
                     this.$router.push('/post')
 
+=======
+                    this.$router.push('/post')
+>>>>>>> 61f97e88bb084c4d1879a98de71430daa2704006
                 }
                 if(status===1){
                     this.$message.warning(message)
