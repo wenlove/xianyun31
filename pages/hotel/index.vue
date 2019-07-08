@@ -138,6 +138,7 @@ export default {
     HotelSelect,
     HotelMap,
     HotelFilters,
+<<<<<<< HEAD
     HotelDetail,
     HotelList
   },
@@ -247,6 +248,10 @@ export default {
         this.getData();
       }, 10);
     }
+=======
+    HotelList,
+    HotelDetail
+>>>>>>> a0328d17026730ec36e77accf6453238b787c591
   }
 };
 </script>
