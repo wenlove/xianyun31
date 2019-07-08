@@ -2,11 +2,7 @@
   <div class="hotel-list">
     <el-row type="flex" class="hotel-item" v-for="(item,index) in data" :key="index">
       <el-col :span="8">
-<<<<<<< HEAD
         <a :href="`/hotel/detail?id=${item.id}`" class="img-wrapper">
-=======
-        <a :href="`/hotel/hotelDetail?id=${item.id}`" class="img-wrapper">
->>>>>>> ab363e0f878cb86108c50de0868dd3a32ba74ea0
           <!-- <img
             src="http://qcloud.dpfile.com/pc/wQ2ejOSmhB4OoEq1LYPHp_2RhNciyW026YiQFr_EEZsQrI_ZB6abZPwgKDOmI03U3dWYFEM5hoslgWXTJDjSPA.jpg"
             alt
@@ -16,11 +12,7 @@
       </el-col>
       <el-col :span="10">
         <h4 class="hotel-name">
-<<<<<<< HEAD
           <a :href="`/hotel/detail?id=${item.id}`">{{item.name}}</a>
-=======
-          <a :href="`/hotel/hotelDetail?id=${item.id}`">{{item.name}}</a>
->>>>>>> ab363e0f878cb86108c50de0868dd3a32ba74ea0
         </h4>
         <!-- 酒店信息 start -->
         <el-row class="hotel-en-name">

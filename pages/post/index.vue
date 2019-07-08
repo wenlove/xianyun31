@@ -1,14 +1,4 @@
 <template>
-<<<<<<< HEAD
-    <div class="container">
-        <h1>旅游首页</h1>
-        <p>跳转页面的时候要把ID传过来</p>
-        <nuxt-link to="post/detail?id=4">塞班岛</nuxt-link>
-        <nuxt-link to="post/detail?id=5">远东国</nuxt-link>
-        <nuxt-link to="post/detail?id=6">成都市</nuxt-link>
-
-        </div>
-=======
   <el-row class="container" type="flex" justify="space-between">
     <!-- 左 -->
     <div class="left-container">
@@ -131,7 +121,6 @@
         </el-pagination>
     </div>
   </el-row>
->>>>>>> 6f8c798cf34e48d4312aacc92f6379a3f1b4132e
 </template>
 
 <script>
@@ -140,27 +129,6 @@ import Duo from './duo'
 import Dan from './dan'
 
 export default {
-<<<<<<< HEAD
- data() {
-      return {
-       
-      };
-    },
-    methods: {
-      
-
-
-    
-
-    }
-}
-</script>
-
-<style>
-.container{
-    width: 800px;
-    margin: 50px auto
-=======
   data() {
     return {
         images:[],
@@ -229,7 +197,6 @@ export default {
           url:'/posts',
           method:'GET',
       }).then(res =>{
-        
         this.article = res.data.data;
         this.total = res.data.total
         
@@ -542,6 +509,5 @@ export default {
 .el-icon-view{
   font-size: 12px;
   padding-right: 5px;
->>>>>>> 6f8c798cf34e48d4312aacc92f6379a3f1b4132e
 }
 </style>
