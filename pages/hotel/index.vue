@@ -4,12 +4,12 @@
     <div class="breadcrumb">
       <el-breadcrumb separator-class="el-icon-arrow-right">
         <el-breadcrumb-item>酒店</el-breadcrumb-item>
-        <el-breadcrumb-item>南京市酒店预订</el-breadcrumb-item>
+        <el-breadcrumb-item>{{cityName}}酒店预订</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
 
     <!-- 选择城市，时间，人数过滤条件 -->
-    <HotelSelect />
+    <HotelSelect @setCity="setCity" />
 
     <!-- 描叙与地图 start -->
     <el-row class="hotel-option-row" type="flex">
@@ -19,11 +19,17 @@
           <el-col :span="3">区域:</el-col>
           <el-col :span="21" class="hidden-all">
             <div class="scenics-box">
-              <a href="#" v-for="(item,index) in 20" :key="index" class="location-budget">全部</a>
+              <a href>全部</a>
+              <a
+                href="#"
+                v-for="(item,index) in scenic"
+                :key="index"
+                class="location-budget"
+              >{{item.name}}</a>
             </div>
             <a href="javascript:;">
               <i class="el-icon-d-arrow-right"></i>
-              <span>等43个区域</span>
+              <span>等{{scenic.length}}个区域</span>
             </a>
           </el-col>
         </el-row>
@@ -92,18 +98,30 @@
       </el-col>
       <!-- 地图 start -->
       <el-col :span="10" class="hotel-map">
-        <HotelMap />
+        <HotelMap :data="hotels" />
       </el-col>
       <!-- 地图 end -->
     </el-row>
     <!-- 描叙与地图 end -->
 
     <!-- 筛选酒店 start -->
-    <HotelFilters />
+    <HotelFilters @setDataList="setDataList" />
     <!-- 筛选酒店 end -->
 
     <!-- 酒店列表 start -->
-    <HotelList />
+    <HotelList :data="hotels" />
+    <!-- 分页 start -->
+    <el-row class="hotel-page" justify="end">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        background
+        :pager-count="5"
+        layout="prev, pager, next"
+        :total="total"
+      ></el-pagination>
+    </el-row>
+    <!-- 分页 end -->
     <!-- 酒店列表 end -->
   </div>
 </template>
@@ -113,13 +131,122 @@ import HotelSelect from "@/components/hotel/hotelSelect.vue";
 import HotelFilters from "@/components/hotel/hotelFilters.vue";
 import HotelList from "@/components/hotel/hotelList.vue";
 import HotelMap from "@/components/hotel/hotelMap.vue";
+import HotelDetail from "@/components/hotel/hoteldetail.vue";
 
 export default {
   components: {
     HotelSelect,
     HotelMap,
     HotelFilters,
+    HotelDetail,
     HotelList
+  },
+  data() {
+    return {
+      //区域
+      scenic: [],
+      //酒店列表数据
+      hotels: [],
+      //分页数据
+      dataList: [],
+      //分页
+      pageSize: 10,
+      pageIndex: 1,
+      total: 0,
+      city: "", //城市id
+      cityName:""//城市名称
+    };
+  },
+  mounted() {
+    
+    this.getData();
+  },
+  methods: {
+    //筛选酒店数据
+    setDataList(obj) {
+      // console.log('setDataList',obj);
+      // console.log(this.$route.query)
+      let query = { ...this.$route.query, ...obj };
+      const { price_lt, hotellevel, hoteltype, hotelasset, hotelbrand } = query;
+
+      
+      if (price_lt == 0) {
+        delete query.price_lt;
+      }
+      if (!hotellevel) {
+        delete query.hotellevel;
+      }
+      if (!hoteltype) {
+        delete query.hoteltype;
+      }
+      if (!hotelasset) {
+        delete query.hotelasset;
+      }
+      if (!hotelbrand) {
+        delete query.hotelbrand;
+      }
+
+      // console.log(query);
+      this.$router.push({
+        path: "/hotel",
+        query
+      });
+    },
+    //获取酒店列表数据
+    getData() {
+      // this.$router.push('/hotel?city='+this.city);
+      this.$axios({
+        url: `/hotels`,
+        params: {
+          _limit: this.pageSize,
+          _start: (this.pageIndex - 1) * this.pageSize,
+          ...this.$route.query
+        }
+      }).then(res => {
+        // console.log(res.data);
+        const { data, total } = res.data;
+
+        if (res.status === 200) {
+          this.hotels = data;
+          //区域
+          this.scenic = data[0] ? data[0].scenic : [];
+
+          //总页数
+          this.total = total;
+          this.pageIndex = 1;
+        }
+      });
+    },
+    //切换分页
+    handleSizeChange(val) {
+      // console.log(`每页 ${val} 条`);
+      this.pageSize = val;
+      this.getData();
+    },
+    //当前页
+    handleCurrentChange(val) {
+      // console.log(`当前页: ${val}`);
+      this.pageIndex = val;
+      this.getData();
+    },
+    //筛选城市酒店数据
+    setCity(value,name,content) {
+      // console.log('seCity:',value,name)
+      this.cityName = name;
+      const query = { ...this.$route.query,city: value };
+      // console.log(query)
+      this.$router.push({
+        path: "/hotel",
+        query
+      });
+    }
+  },
+  watch: {
+    $route() {
+      setTimeout(() => {
+        this.getData();
+      }, 10);
+    }
   }
 };
 </script>
@@ -196,5 +323,13 @@ export default {
 
 .iconhuangguan {
   color: #f90;
+}
+// 分页
+.hotel-page {
+  padding: 20px 0 40px;
+  .el-pagination {
+    display: flex;
+    justify-content: flex-end;
+  }
 }
 </style>

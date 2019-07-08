@@ -6,20 +6,27 @@
         <el-col class="filter-col" :span="6" style="padding:5px 20px;">
           <el-row type="flex" justify="space-tween">
             <el-col>价格</el-col>
-            <el-col>0-4000</el-col>
+            <el-col>0-{{slider}}</el-col>
           </el-row>
-          <el-slider v-model="slider" :max="4000"></el-slider>
+          <el-slider v-model="slider" @change="handleSlider" :max="4000"></el-slider>
         </el-col>
         <el-col class="filter-col" :span="6">
           <el-row type="flex" class="filter-title">
             <el-col>住宿等级</el-col>
           </el-row>
-          <el-select v-model="value2" multiple collapse-tags placeholder="不限">
+          <el-select
+            v-model="ranksValue"
+            clearable
+            @clear="handleRankEmpty"
+            collapse-tags
+            placeholder="不限"
+            @change="handleRank"
+          >
             <el-option
-              v-for="item in select2"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              v-for="(item,index) in ranks"
+              :key="index"
+              :label="item.name"
+              :value="item.id"
             ></el-option>
           </el-select>
         </el-col>
@@ -27,12 +34,19 @@
           <el-row type="flex" class="filter-title">
             <el-col>住宿类型</el-col>
           </el-row>
-          <el-select v-model="value3" multiple collapse-tags placeholder="不限">
+          <el-select
+            v-model="typesValue"
+            clearable
+            @clear="handleTypesEmpty"
+            collapse-tags
+            @change="handleTypes"
+            placeholder="不限"
+          >
             <el-option
-              v-for="item in select3"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
+              v-for="(item,index) in types"
+              :key="index"
+              :label="item.name"
+              :value="item.id"
             ></el-option>
           </el-select>
         </el-col>
@@ -40,12 +54,19 @@
           <el-row type="flex" class="filter-title">
             <el-col>酒店设施</el-col>
           </el-row>
-          <el-select v-model="value4" multiple collapse-tags placeholder="不限">
+          <el-select
+            v-model="facilityValue"
+            clearable
+            @clear="handleFacilitysEmpty"
+            collapse-tags
+            @change="handleFacilitys"
+            placeholder="不限"
+          >
             <el-option
-              v-for="item in select4"
-              :key="item.name"
-              :label="item.label"
-              :value="item.name"
+              v-for="(item,index) in facilitys"
+              :key="index"
+              :label="item.name"
+              :value="item.id"
             ></el-option>
           </el-select>
         </el-col>
@@ -53,12 +74,19 @@
           <el-row type="flex" class="filter-title">
             <el-col>酒店品牌</el-col>
           </el-row>
-          <el-select v-model="value5" multiple collapse-tags placeholder="不限">
+          <el-select
+            v-model="brandValue"
+            clearable
+            @clear="handleBrandsEmpty"
+            collapse-tags
+            @change="handleBrands"
+            placeholder="不限"
+          >
             <el-option
-              v-for="item in select5"
-              :key="item.name"
-              :label="item.label"
-              :value="item.name"
+              v-for="(item,index) in brands"
+              :key="index"
+              :label="item.name"
+              :value="item.id"
             ></el-option>
           </el-select>
         </el-col>
@@ -72,7 +100,6 @@
 export default {
   data() {
     return {
-      slider: 0, //滑块
       options: [
         {
           name: "选项1",
@@ -84,89 +111,106 @@ export default {
         }
       ],
       //筛选条件
-      select1: [
+      //住宿等级
+      ranks: [
         {
           value: "选项1",
           label: "黄金糕"
-        },
-        {
-          value: "选项2",
-          label: "双皮奶"
         }
       ],
-      select2: [
+      //住宿类型
+      types: [
         {
           value: "选项1",
           label: "黄金糕"
-        },
-        {
-          value: "选项2",
-          label: "双皮奶"
         }
       ],
-      select3: [
+      // 设施
+      facilitys: [
         {
           value: "选项1",
           label: "黄金糕"
-        },
-        {
-          value: "选项2",
-          label: "双皮奶"
         }
       ],
-      select4: [
+      //酒店品牌
+      brands: [
         {
           value: "选项1",
           label: "黄金糕"
-        },
-        {
-          value: "选项2",
-          label: "双皮奶"
         }
       ],
-      select5: [
-        {
-          value: "选项1",
-          label: "黄金糕"
-        },
-        {
-          value: "选项2",
-          label: "双皮奶"
-        }
-      ],
-      value1: [],
-      value2: [],
-      value3: [],
-      value4: [],
-      value5: []
+      slider: 4000, //滑块
+      ranksValue: [],
+      typesValue: [],
+      facilityValue: [],
+      brandValue: [],
+
+      hotelasset: 0, //酒店设施
+      hotelbrand: 0, //酒店品牌
+      hoteltype: 0, //酒店类型
+      hotellevel: 0, //酒店星级
+      price_in: 0 //酒店价格
     };
   },
   methods: {
-    //表单提交
-    submitForm(formName) {
-      this.$refs[formName].validate(valid => {
-        if (valid) {
-          alert("submit!");
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
+    //价格筛选
+    handleSlider(value) {
+      // console.log(value);
+      this.$emit("setDataList", { price_lt: value });
     },
-    //选择城市
-    handleSelect() {
-      console.log(11);
+    //住宿等级
+    handleRank(value) {
+      // console.log(value);
+
+      this.$emit("setDataList", { hotellevel: value });
     },
-    querySearchCity(queryString, cb) {
-      //cd回调函数
+    //清空住宿等级
+    handleRankEmpty(value) {
+      this.$emit("setDataList", {});
     },
-    //选择人数
-    handleSelectNum() {
-      console.log(11);
+    //住宿类型
+    handleTypes(value) {
+      // console.log(value);
+      this.$emit("setDataList", {hoteltype: value});
     },
-    querySearchNum(queryString, cb) {
-      console.log(queryString);
+    //清空住宿类型
+    handleTypesEmpty() {
+      this.$emit("setDataList", {});
+    },
+    //设施
+    handleFacilitys(value) {
+      // console.log(value);
+      
+      this.$emit("setDataList", { hotelasset: value});
+    },
+    //清空设施
+    handleFacilitysEmpty() {
+      this.$emit("setDataList", {});
+    },
+    //酒店品牌
+    handleBrands(value) {
+      // console.log(value);
+      this.$emit("setDataList", {hotelbrand: value});
+    },
+    //清空品牌
+    handleBrandsEmpty() {
+      this.$emit("setDataList", {});
     }
+  },
+  mounted() {
+    //获取酒店筛选条件
+    this.$axios({
+      url: "/hotels/options"
+    }).then(res => {
+      const { data } = res.data;
+      // console.log(data)
+      if (res.status == 200) {
+        this.ranks = data.levels;
+        this.types = data.types;
+        this.facilitys = data.assets;
+        this.brands = data.brands;
+      }
+    });
   }
 };
 </script>
@@ -185,7 +229,7 @@ export default {
     border-right: 1px solid #ddd;
     padding: 5px 0;
     &:last-child {
-      border-right: 0 ;
+      border-right: 0;
     }
     .filter-title {
       padding: 0 15px;
