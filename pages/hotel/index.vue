@@ -247,6 +247,7 @@ export default {
         this.getData();
       }, 10);
     }
+
   }
 };
 </script>
