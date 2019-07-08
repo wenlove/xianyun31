@@ -2,8 +2,8 @@
   <div class="hotel">
     <div class="head">
       <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/hotel/city' }">酒店</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/hotel/city' }">南京酒店</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/hotel'}">酒店</el-breadcrumb-item>
+        <el-breadcrumb-item :to="{ path: '/hotel?city='+city }">南京酒店</el-breadcrumb-item>
         <el-breadcrumb-item>{{dataList.name}}</el-breadcrumb-item>
         <br />
         <div class="abc">
@@ -16,22 +16,22 @@
     <!-- 图片 -->
     <div class="Displayimg">
       <div class="img1">
-        <img src="../../static/1.jpeg" v-if="message===1" />
-        <img src="../../static/2.jpeg" v-if="message===2" />
-        <img src="../../static/3.jpeg" v-if="message===3" />
-        <img src="../../static/4.jpeg" v-if="message===4" />
-        <img src="../../static/5.jpeg" v-if="message===5" />
-        <img src="../../static/6.jpeg" v-if="message===6" />
+        <img src="@/static/1.jpeg" v-if="message===1" />
+        <img src="@/static/2.jpeg" v-if="message===2" />
+        <img src="@/static/3.jpeg" v-if="message===3" />
+        <img src="@/static/4.jpeg" v-if="message===4" />
+        <img src="@/static/5.jpeg" v-if="message===5" />
+        <img src="@/static/6.jpeg" v-if="message===6" />
       </div>
       <div class="img2">
         <el-row>
-          <div class="grid-conten4" offset=7>
-            <img src="../../static/1.jpeg" @click="handleChange(arr[0])" />
-            <img src="../../static/2.jpeg" @click="handleChange(arr[1])" />
-            <img src="../../static/3.jpeg" @click="handleChange(arr[2])" />
-            <img src="../../static/1.jpeg" @click="handleChange(arr[3])" />
-            <img src="../../static/2.jpeg" @click="handleChange(arr[4])" />
-            <img src="../../static/3.jpeg" @click="handleChange(arr[5])" />
+          <div class="grid-conten4" offset="7">
+            <img src="@/static/1.jpeg" @click="handleChange(arr[0])" />
+            <img src="@/static/2.jpeg" @click="handleChange(arr[1])" />
+            <img src="@/static/3.jpeg" @click="handleChange(arr[2])" />
+            <img src="@/static/1.jpeg" @click="handleChange(arr[3])" />
+            <img src="@/static/2.jpeg" @click="handleChange(arr[4])" />
+            <img src="@/static/3.jpeg" @click="handleChange(arr[5])" />
           </div>
         </el-row>
       </div>
@@ -92,7 +92,6 @@
             v-for="(item,index) in ditu"
             :key="index"
             class="ditu"
-            
           >
             <span>{{item}}</span>
             <p>1.03公里</p>
@@ -159,28 +158,26 @@
       <div class="pingluninput">
         <ul v-for="(item,index) in hotel.content" :key="index">
           <li>
-            <div
-              class="wenzi"
-            >{{item}}</div>
+            <div class="wenzi">{{item}}</div>
             <br />
             <el-row type="flex" justify="space-between">
               <el-row class="boom" type="flex" direction="vertical" align="center">
-                <img src="../../static/7.jpeg" />
+                <img src="@/static/7.jpeg" />
                 <p>2019-6-26</p>
               </el-row>
-              <el-input placeholder="添加回复"><span @click="handlechange"></span></el-input>
+              <el-input placeholder="添加回复">
+                <span></span>
+              </el-input>
               <p>
                 <el-button type="primary">回复</el-button>
               </p>
             </el-row>
             <ul class="asd" v-for="(v,i) in hotel.followed.content" :key="i">
               <li>
-            <div
-              class="wenzi"
-            >{{v}}</div>
+                <div class="wenzi">{{v}}</div>
                 <el-row type="flex" justify="space-between">
                   <el-row class="boom" type="flex" direction="vertical" align="center">
-                    <img src="../../static/7.jpeg" />
+                    <img src="@/static/7.jpeg" />
                     <p>2019-6-26</p>
                   </el-row>
                   <el-input placeholder="添加回复"></el-input>
@@ -198,10 +195,10 @@
 export default {
   data() {
     return {
-
-      hotel:{
-        content:[],
-        followed:{content:[]},
+      city:"",
+      hotel: {
+        content: [],
+        followed: { content: [] }
       },
       common_remarks: 0,
       good_remarks: 0,
@@ -216,7 +213,6 @@ export default {
         "红红的太阳",
         "固城湖水慢城",
         "绿地广场"
-
       ],
       //请求回来的总数据
       dataList: [],
@@ -264,15 +260,15 @@ export default {
 
     const id = this.$route.query.id;
     this.$axios({
-      url: "/hotels",
+      url: "/hotels?id="+id,
       method: "GET",
-      data: {
-        id:2
-      }
+      
     }).then(res => {
-      console.log(res.data);
+      // console.log(res.data);
       const { data } = res.data;
+      console.log(data[0])
       this.dataList = data[0];
+      this.city = data[0].city.id;
       this.products = data[0].products;
       this.hotelassets = data[0].hotelassets;
       this.value = res.data.data[0].hotellevel.level;
@@ -281,15 +277,15 @@ export default {
     });
 
     this.$axios({
-      url:'/comments',
-      data:{
+      url: "/comments",
+      data: {
         id
       }
     }).then(res => {
-      console.log(res.data);
-      this.hotel.content.push(res.data[0].content) ;
+      // console.log(res.data);
+      this.hotel.content.push(res.data[0].content);
       this.hotel.followed.content.push(res.data[0].followed[0].content);
-    })
+    });
   },
   methods: {
     handleChange(index) {
@@ -298,43 +294,43 @@ export default {
     handleBoom() {
       this.ditu = this.ditu.reverse();
     },
-  
-    handleWindow(){
+
+    handleWindow() {
       //  地图
       window.onLoad = function() {
-          var map = new AMap.Map("container", {
-            zoom: 11, //级别
-            center: [116.397428, 39.90923], //中心点坐标
-            viewMode: "3D" //使用3D视图
-          });
-          //控制条和缩放的工具
-          var toolbar = new AMap.ToolBar();
-          map.addControl(toolbar);
+        var map = new AMap.Map("container", {
+          zoom: 11, //级别
+          center: [116.397428, 39.90923], //中心点坐标
+          viewMode: "3D" //使用3D视图
+        });
+        //控制条和缩放的工具
+        var toolbar = new AMap.ToolBar();
+        map.addControl(toolbar);
 
-          //点标记
-          // 创建一个 Marker 实例：
-          var marker = new AMap.Marker({
-            content: '<div class="marker-route marker-marker-bus-from">1</div>',
-            position: new AMap.LngLat(118.87, 31.328), // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
-            title: "高淳县淳溪镇"
-          });
-          // 将创建的点标记添加到已有的地图实例：
-          map.add(marker);
-        };
-          var url = `https://webapi.amap.com/maps?v=1.4.15&key=d6d10158cfd6993d44054ed6a27cce49&callback=onLoad&plugin=AMap.ToolBar`;
-          var jsapi = document.createElement("script");
-          jsapi.charset = "utf-8";
-          jsapi.src = url;
-          document.head.appendChild(jsapi);
-      },
-    },
+        //点标记
+        // 创建一个 Marker 实例：
+        var marker = new AMap.Marker({
+          content: '<div class="marker-route marker-marker-bus-from">1</div>',
+          position: new AMap.LngLat(118.87, 31.328), // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+          title: "高淳县淳溪镇"
+        });
+        // 将创建的点标记添加到已有的地图实例：
+        map.add(marker);
+      };
+      var url = `https://webapi.amap.com/maps?v=1.4.15&key=d6d10158cfd6993d44054ed6a27cce49&callback=onLoad&plugin=AMap.ToolBar`;
+      var jsapi = document.createElement("script");
+      jsapi.charset = "utf-8";
+      jsapi.src = url;
+      document.head.appendChild(jsapi);
+    }
+  }
 };
 </script>
 
 <style scoped lang="less">
 .ditu {
   margin-bottom: 10px;
-  font-size:15px;
+  font-size: 15px;
 }
 .hotel {
   width: 1000px;

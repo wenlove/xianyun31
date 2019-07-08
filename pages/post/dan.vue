@@ -3,18 +3,18 @@
 
               <div class="publicity">
                 <el-col v-for="(v,index) in item.images" :key="index"  :span=8>
-                    <a href="#">
+                    <a :href="`/post/detail?id=${item.id}`">
                       <img :src="v" alt="">
                     </a>
                 </el-col>
               </div>
 
               <div class="other-1">
-                  <h4><a href="#">{{item.title}}</a></h4>
+                  <h4><a :href="`/post/detail?id=${item.id}`">{{item.title}}</a></h4>
 
                 <div class="content-box">
                     <div class="content">
-                      <a href="#">
+                      <a :href="`/post/detail?id=${item.id}`">
                         <p v-html="item.summary"></p>
                       </a>
                   </div>

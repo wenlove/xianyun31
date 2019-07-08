@@ -50,7 +50,7 @@
         <!-- 推荐 -->
         <div class="tuijian">
             <span>推荐:</span>
-            <a href="#" class="tuijianer" v-for="(item,index) in tuijian" :key="index">
+            <a href="javascript:;" class="tuijianer" v-for="(item,index) in tuijian" :key="index">
                 <span @click="handleRecommend(item)">{{item}}</span>
             </a>
         </div>
@@ -197,6 +197,7 @@ export default {
           url:'/posts',
           method:'GET',
       }).then(res =>{
+        
         this.article = res.data.data;
         this.total = res.data.total
         
