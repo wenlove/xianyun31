@@ -77,6 +77,7 @@ export default {
     },
 
     handleClickSubmit() {
+      console.log(123)
       const { token } = this.$store.state.user.userInfo;
       this.$axios({
         url: "/comments",

@@ -61,7 +61,7 @@
             <span>推荐攻略</span>
             <el-button type="primary" @click="handleClick" class="strategy-button">
                 <i class="el-icon-edit"></i>
-                <nuxt-link to="./post/ee">写游记</nuxt-link>
+                <nuxt-link to="./post/create">写游记</nuxt-link>
             </el-button>
         </el-row>
 

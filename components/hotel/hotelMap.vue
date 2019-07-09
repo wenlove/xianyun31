@@ -48,7 +48,7 @@ export default {
 
       //点标记
       _this.marker = new AMap.Marker({
-        content: '<div class="marker-route marker-marker-bus-from">1</div>',
+        // content: '<div class="marker-route marker-marker-bus-from">1</div>',
         position: new AMap.LngLat(116.397428, 39.90923), // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
         title: "北京市"
       });
