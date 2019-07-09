@@ -17,10 +17,10 @@
         <!-- 酒店信息 start -->
         <el-row class="hotel-en-name">
           <span>{{item.alias}}</span>
-          <span :title="`${item.hotellevel?item.hotellevel.name+'级':'0星级'}`">
+          <span :title="`${item.hotellevel ? item.hotellevel.name + '级': '0星级'}`">
             <i
               class="iconfont iconhuangguan"
-              v-for="item1 in (item.hotellevel?item.hotellevel.level:0)"
+              v-for="item1 in (item.hotellevel ? item.hotellevel.level : 0)"
               :key="item1"
             ></i>
           </span>

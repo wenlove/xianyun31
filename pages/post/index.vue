@@ -59,9 +59,9 @@
         <!-- 推荐攻略 -->
         <el-row class="strategy" type='flex' justify='space-between'>
             <span>推荐攻略</span>
-            <el-button type="primary" class="strategy-button">
+            <el-button type="primary" @click="handleClick" class="strategy-button">
                 <i class="el-icon-edit"></i>
-                <nuxt-link to="./post/create">写游记</nuxt-link>
+                <nuxt-link to="./post/ee">写游记</nuxt-link>
             </el-button>
         </el-row>
 
@@ -168,6 +168,10 @@ export default {
       this.article = {...arr}
     },
 
+    //跳转到发表攻略页
+    handleClick(){
+      this.$router.push("/post/create")
+    },
 
     setDataList(){
       this.getArticle()

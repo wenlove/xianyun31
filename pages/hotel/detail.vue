@@ -29,9 +29,9 @@
             <img src="@/static/1.jpeg" @click="handleChange(arr[0])" />
             <img src="@/static/2.jpeg" @click="handleChange(arr[1])" />
             <img src="@/static/3.jpeg" @click="handleChange(arr[2])" />
-            <img src="@/static/1.jpeg" @click="handleChange(arr[3])" />
-            <img src="@/static/2.jpeg" @click="handleChange(arr[4])" />
-            <img src="@/static/3.jpeg" @click="handleChange(arr[5])" />
+            <img src="@/static/4.jpeg" @click="handleChange(arr[3])" />
+            <img src="@/static/5.jpeg" @click="handleChange(arr[4])" />
+            <img src="@/static/6.jpeg" @click="handleChange(arr[5])" />
           </div>
         </el-row>
       </div>
